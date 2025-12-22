@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API_URL } from '../constants';
+import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
 interface Token {
@@ -11,7 +11,7 @@ interface Token {
   providedIn: 'root',
 })
 export class UserService {
-  private readonly baseUrl = `${API_URL}/auth`;
+  private readonly baseUrl = `${environment.apiUrl}/auth`;
   private http = inject(HttpClient);
   private router = inject(Router);
 

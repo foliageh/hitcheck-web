@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Shot } from '../domain/shot';
-import { API_URL } from '../constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShotService {
-  private readonly baseUrl = `${API_URL}/my-shots`;
+  private readonly baseUrl = `${environment.apiUrl}/my-shots`;
   private http = inject(HttpClient);
 
   retrieveShots() {
