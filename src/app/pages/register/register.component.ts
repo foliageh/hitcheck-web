@@ -7,17 +7,27 @@ import { MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { RouterLink } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [InputTextModule, PasswordModule, FormsModule, ButtonModule, RouterLink, RippleModule],
+  imports: [
+    InputTextModule,
+    PasswordModule,
+    FormsModule,
+    ButtonModule,
+    RouterLink,
+    RippleModule,
+    ProgressSpinnerModule,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   private userService = inject(UserService);
   private messageService = inject(MessageService);
+  public isLoading = false;
 
   private validationFailed!: boolean;
 
@@ -34,7 +44,11 @@ export class RegisterComponent {
       this.showError('Password must be between 8 and 32 characters');
     if (this.validationFailed) return;
 
-    this.userService.register(username, password);
+    this.isLoading = true;
+    const subscription = this.userService.register(username, password);
+    subscription.add(() => {
+      this.isLoading = false;
+    });
   }
 
   private showError(message: string) {

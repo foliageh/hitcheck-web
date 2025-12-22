@@ -30,14 +30,22 @@
         type="password"
       />
       <button
-        [disabled]="registerForm.value.password !== registerForm.value.passwordConfirmation"
+        [disabled]="registerForm.value.password !== registerForm.value.passwordConfirmation || isLoading"
         class="w-full"
-        icon="pi pi-user"
-        label="Create an account"
+        [icon]="isLoading ? '' : 'pi pi-user'"
+        [label]="isLoading ? 'Creating Account...' : 'Create an account'"
         aria-label="Create an account"
         pButton
         pRipple
-      ></button>
+      >
+        @if (isLoading) {
+          <p-progressSpinner
+            [style]="{ width: '20px', height: '20px' }"
+            styleClass="inline-block mr-2"
+            strokeWidth="4"
+          ></p-progressSpinner>
+        }
+      </button>
     </div>
   </div>
 </form>

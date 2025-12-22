@@ -10,6 +10,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ShotService } from '../../services/shot.service';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
+import { catchError, of } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-main',
@@ -23,6 +25,7 @@ import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
     ButtonModule,
     FormsModule,
     CheckboxModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
@@ -33,6 +36,8 @@ export class MainComponent implements AfterViewInit, OnInit {
   // shots:
   private shotService = inject(ShotService);
   public shots: Shot[] = [];
+  public isLoadingShots = false;
+  public isCreatingShot = false;
 
   // form:
   public selectedX: number[] = [];
@@ -48,7 +53,11 @@ export class MainComponent implements AfterViewInit, OnInit {
   private scale!: number;
 
   ngOnInit(): void {
-    this.shotService.retrieveShots().subscribe(shots => (this.shots = shots));
+    this.isLoadingShots = true;
+    this.shotService.retrieveShots().subscribe(shots => {
+      this.shots = shots;
+      this.isLoadingShots = false;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -59,10 +68,22 @@ export class MainComponent implements AfterViewInit, OnInit {
   }
 
   shoot(x: number | string, y: number | string, r: number | string) {
-    this.shotService.createShot(x, y, r).subscribe(shot => {
-      this.shots = this.shots.concat(shot); // reassign array for proper p-table functioning
-      this.drawPlot();
-    });
+    this.isCreatingShot = true;
+    this.shotService
+      .createShot(x, y, r)
+      .pipe(
+        catchError(_error => {
+          this.isCreatingShot = false;
+          return of(null);
+        })
+      )
+      .subscribe(shot => {
+        if (shot) {
+          this.shots = this.shots.concat(shot); // reassign array for proper p-table functioning
+          this.drawPlot();
+        }
+        this.isCreatingShot = false;
+      });
   }
 
   onSubmit(form: NgForm) {

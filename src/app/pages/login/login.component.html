@@ -20,14 +20,22 @@
         type="password"
       />
       <button
-        [disabled]="loginForm.value.username === '' || loginForm.value.password === ''"
+        [disabled]="loginForm.value.username === '' || loginForm.value.password === '' || isLoading"
         class="w-full"
-        icon="pi pi-user"
-        label="Sign In"
+        [icon]="isLoading ? '' : 'pi pi-user'"
+        [label]="isLoading ? 'Signing In...' : 'Sign In'"
         aria-label="Sign In"
         pButton
         pRipple
-      ></button>
+      >
+        @if (isLoading) {
+          <p-progressSpinner
+            [style]="{ width: '20px', height: '20px' }"
+            styleClass="inline-block mr-2"
+            strokeWidth="4"
+          ></p-progressSpinner>
+        }
+      </button>
     </div>
   </div>
 </form>
