@@ -1,41 +1,229 @@
-# Lab work #4 (Frontend)
-
-**SPA for [lab work #4 fullstack app](https://github.com/foliageh/itmo-web-lab4) on Angular 17 & RxJS**.  
-Angular 17, TypeScript, RxJS, HTML, SCSS, PrimeNG, PrimeFlex.
+# Лабораторная работа №4 (Веб-программирование) - Фронтенд
 
 <img src="https://github.com/foliageh/itmo-web-lab4/assets/46216950/7900419f-3e09-47db-b441-61c95821d755" alt="image" width="800"><br>
 <img src="https://github.com/foliageh/itmo-web-lab4/assets/46216950/2bd81da9-3928-4270-bc42-c5a75a252ee5" alt="image" width="800">
 
----
+## 📋 Описание проекта
 
-# Bla-Bla-Bla by Angular CLI
+Это одностраничное веб-приложение (SPA), разработанное на Angular 17, которое является
+фронтенд-частью [лабораторной работы №4](https://github.com/foliageh/itmo-web-lab4). Приложение предоставляет интерфейс
+для работы с системой проверки попадания точек в заданную область на координатной плоскости.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.8.
+### Основной функционал:
 
-## Development server
+- **Аутентификация пользователей**: регистрация и вход в систему
+- **Работа с выстрелами**: создание и просмотр выстрелов с проверкой попадания в область
+- **Визуализация**: интерактивная графическая область для ввода координат и отображения результатов
+- **Защита маршрутов**: авторизованные пользователи имеют доступ к основному функционалу
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you
-change any of the source files.
+### Технологический стек:
 
-## Code scaffolding
+- **Angular 17** - фреймворк для разработки SPA
+- **TypeScript** - типизированный JavaScript
+- **RxJS** - библиотека для реактивного программирования
+- **PrimeNG** - UI-компоненты для Angular
+- **PrimeFlex** - CSS-утилиты для стилизации
+- **SCSS** - препроцессор CSS
+- **ESLint** - линтер для проверки кода
+- **Prettier** - форматтер кода
+- **Husky** - Git hooks для автоматизации
 
-Run `ng generate component component-name` to generate a new component. You can also
-use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## 🚀 Установка
 
-## Build
+### Требования
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Перед установкой убедитесь, что на вашем компьютере установлены:
 
-## Running unit tests
+- **Node.js** версии 18.x или выше
+- **npm** версии 9.x или выше (обычно устанавливается вместе с Node.js)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Проверить версии можно командами:
 
-## Running end-to-end tests
+```bash
+node --version
+npm --version
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a
-package that implements end-to-end testing capabilities.
+### Шаги установки
 
-## Further help
+1. **Клонируйте репозиторий** (если еще не сделали):
+   ```bash
+   git clone <repository-url>
+   cd itmo-web-lab4-front
+   ```
 
-To get more help on the Angular CLI use `ng help` or go check out
-the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+2. **Установите зависимости**:
+   ```bash
+   npm install
+   ```
+
+   Эта команда установит все необходимые пакеты, указанные в `package.json`, включая Angular CLI и все зависимости
+   проекта.
+
+3. **Проверьте установку**:
+   ```bash
+   npm run lint:all
+   ```
+
+   Команда проверит, что проект настроен корректно.
+
+## 🏃 Запуск приложения
+
+### Режим разработки (Development)
+
+Для запуска приложения в режиме разработки с hot-reload:
+
+```bash
+npm start
+```
+
+или
+
+```bash
+ng serve
+```
+
+Приложение будет доступно по адресу: **http://localhost:4200**
+
+В режиме разработки:
+
+- Включен hot-reload (автоматическая перезагрузка при изменении файлов)
+- Включены source maps для отладки
+- Отключена оптимизация сборки
+- Используется конфигурация `environment.ts` (API: `http://localhost:8080/api`)
+
+### Сборка для production
+
+Для создания production-сборки:
+
+```bash
+npm run build
+```
+
+или
+
+```bash
+ng build --configuration production
+```
+
+Собранные файлы будут находиться в директории `dist/itmo-web-lab4-front/browser/`.
+
+## 🌍 Развертывание для разных окружений
+
+Проект поддерживает несколько конфигураций окружений. Настройки окружений находятся в директории `src/environments/`.
+
+### Development окружение
+
+**Файл**: `src/environments/environment.ts`
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api',
+};
+```
+
+**Использование**:
+
+- Автоматически используется при `ng serve` или `npm start`
+- Для явного указания: `ng serve --configuration development`
+
+**Настройка**:
+
+1. Убедитесь, что backend-сервер запущен на `http://localhost:8080`
+2. Если ваш backend использует другой порт, измените `apiUrl` в `environment.ts`
+
+### Production окружение
+
+**Файл**: `src/environments/environment.prod.ts`
+
+```typescript
+export const environment = {
+  production: true,
+  apiUrl: 'http://localhost:22288/api', // helios
+};
+```
+
+**Использование**:
+
+```bash
+ng build --configuration production
+```
+
+**Настройка для Helios**:
+
+1. Текущая конфигурация настроена для Helios (порт 22288)
+2. Для изменения адреса API отредактируйте `environment.prod.ts`
+
+## 🛠️ Дополнительные команды
+
+### Линтинг и форматирование
+
+```bash
+# Проверка линтера
+npm run lint
+
+# Автоматическое исправление ошибок линтера
+npm run lint:fix
+
+# Форматирование кода
+npm run format
+
+# Проверка форматирования
+npm run format:check
+
+# Проверка всего (линтер + форматтер)
+npm run lint:all
+
+# Исправление всего
+npm run fix:all
+```
+
+## 📁 Структура проекта
+
+```
+itmo-web-lab4-front/
+├── src/
+│   ├── app/
+│   │   ├── domain/          # Модели данных
+│   │   ├── interceptors/    # HTTP-перехватчики
+│   │   ├── layout/          # Компоненты макета
+│   │   ├── pages/           # Страницы приложения
+│   │   ├── services/        # Сервисы (API, бизнес-логика)
+│   │   ├── app.config.ts    # Конфигурация приложения
+│   │   └── app.routes.ts    # Маршрутизация
+│   ├── assets/              # Статические ресурсы
+│   ├── environments/        # Конфигурации окружений
+│   ├── index.html           # Главный HTML-файл
+│   ├── main.ts              # Точка входа
+│   └── styles.scss          # Глобальные стили
+├── angular.json             # Конфигурация Angular CLI
+├── package.json             # Зависимости и скрипты
+└── tsconfig.json            # Конфигурация TypeScript
+```
+
+## ⚙️ Конфигурация
+
+### Настройка API URL
+
+API URL настраивается в файлах окружений:
+
+- **Development**: `src/environments/environment.ts`
+- **Production**: `src/environments/environment.prod.ts`
+
+### Настройка порта разработки
+
+По умолчанию приложение запускается на порту 4200. Для изменения:
+
+```bash
+ng serve --port 4300
+```
+
+## 📝 Лицензия
+
+Этот проект является частью лабораторной работы и предназначен для образовательных целей.
+
+## 👥 Авторы
+
+Проект разработан студентом группы P3409 Муратовым Михаилом Александровичем в рамках лабораторной работы №4 по
+веб-технологиям.
